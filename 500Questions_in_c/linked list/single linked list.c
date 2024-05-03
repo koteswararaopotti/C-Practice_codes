@@ -53,7 +53,7 @@ struct node* createlist(struct node* head, int n)
     if(head == NULL)
     {
         head = newnode;
-        count++;
+        count++; // used for finding middle node in linked list ( returns size of linked list )
     }
     
     struct node* temp = head;
@@ -111,8 +111,6 @@ struct node* insertnode_end(struct node* head)
     temp->next = newnode;
     
     return head;
-    
-    return head;
 }
 
 struct node* insertnode_atpos(struct node* head)
@@ -136,7 +134,8 @@ struct node* insertnode_atpos(struct node* head)
         newnode->next = temp;
         return newnode;
     }
-    for(int i = 1; i<pos-1; i++)
+    for(int i = 1; i<pos-1; i++)//find nodes before that pos
+    //for(int i = 1; i < pos; i++)//find nodes till that pos (insert node after pos)
     {
         temp = temp->next;
     }
@@ -398,7 +397,7 @@ int nthnode_fromend(struct node* head, int nodeindex, int count_start)
 void middlenode(struct node* head)
 {
     struct node* fast = head;
-    struct node* slow = head;
+    struct node* slow = head->next;
     
     while(fast != NULL && fast->next != NULL)
     {
@@ -407,6 +406,50 @@ void middlenode(struct node* head)
     }
     
     printf("middle node : %d\n",slow->data);
+}
+
+struct node* fibonacci(struct node* head, int index)
+{
+    int prev0 = 1;
+    int prev1 = 0;
+    struct node* newnode = (struct node*)malloc(sizeof(struct node));
+    newnode->data = prev1;
+    newnode->next = NULL;
+    if(head == NULL)
+    {
+        head = newnode;
+    }
+    struct node* temp = NULL;
+    if(temp == NULL)
+    {
+        temp = (struct node*)malloc(sizeof(struct node));
+        temp->data = prev0;
+        temp->next = NULL;
+        head->next = temp;
+    }
+    int fib;
+    for(int i = 2; i < index; i++)
+    {
+        fib = prev0+prev1;
+        prev1 = prev0;
+        prev0 = fib;
+        
+        struct node* newnode = (struct node*)malloc(sizeof(struct node));
+        newnode->data = fib;
+        newnode->next = NULL;
+        
+        temp->next = newnode;
+        temp = temp->next;
+    }
+    
+    struct node* temp1 = head;
+    while(temp1->next != NULL)
+    {
+        temp1 = temp1->next;
+    }
+    printf("at index %d, fibonacci number is : %d",index, temp1->data);
+    return head;
+    
 }
 
 /*****************Stack using linked list****************/
@@ -551,6 +594,7 @@ void enqueue(int data)
     {
         rear->next = newnode;
         rear = newnode;
+        //rear = rear->next;
     }
 }
 
@@ -637,7 +681,7 @@ int queue_linkedlist()
 
 static inline void Enterchoice(void)
 {
-	printf("Enter 1 through 11 to select one linked list operation\n1. create linked list\n2. insert node at start of linked list\n3. insert node at end of linked list\n4. insert node at given position of linked list\n5. delete node at start of linked list\n6. delete node at end of linked list\n7. delete node at given position of linked list\n8. delete entire linked list\n9. reverse entire list\n10. sort linked list (ascending order)\n11. display entire list\n12. append list to current list\n13. create stack using linked list\n14. create queue using linked list\n15. copy entire linked list\n16. find given node from end of linked list\n17. find middle node in linked list\n");
+	printf("Enter 1 through 11 to select one linked list operation\n1. create linked list\n2. insert node at start of linked list\n3. insert node at end of linked list\n4. insert node at given position of linked list\n5. delete node at start of linked list\n6. delete node at end of linked list\n7. delete node at given position of linked list\n8. delete entire linked list\n9. reverse entire list\n10. sort linked list (ascending order)\n11. display entire list\n12. append list to current list\n13. create stack using linked list\n14. create queue using linked list\n15. copy entire linked list\n16. find given node from end of linked list\n17. find middle node in linked list\n18: fibonacci series using linked list");
     
 }
 
@@ -728,8 +772,14 @@ int main(int argc, char* argv[])
     		    int nthnode_end = nthnode_fromend(head, nodeindex,count);
     
     		    printf("%d index from end in linked list has [%d] \n",nodeindex, nthnode_end);
-    		case 17:
+    	    case 17:
     		    middlenode(head);
+    		    break;
+    		case 18:
+    		    int index;
+    		    printf("Enter index you want to print in fibonacci series : ");
+    		    scanf("%d",&index);
+    		    head = fibonacci(head, 10);
     		    break;
             default:
                 printf("please enter between 1 to 17\n");
